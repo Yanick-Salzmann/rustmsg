@@ -24,7 +24,10 @@ impl CachedHttpLoader {
     pub fn download_string(&self, url: &str) -> Result<String, reqwest::Error> {
         match read_from_cache(&self.cache_folder, url) {
             Some(content) => return Ok(content),
-            None => return Ok(save_to_cache(&self.cache_folder, url, &self.client.get(url).send()?.text()?))
+            None => {
+                println!("----> GET {}", url);
+                return Ok(save_to_cache(&self.cache_folder, url, &self.client.get(url).send()?.text()?))
+            }
         }
     }
 }
